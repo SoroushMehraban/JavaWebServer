@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        h1 {
+            color: red;
+            font-family: cursive;
+        }
+        
+        p {
+            font-family: monospace;
+        }
+        
+        .myForm {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Connection succeeded</h1>
+    <p>The WebServer is active and Connection succeeded</p>
+    <p>This WebServer only responses to GET requsest</p>
+    <p>for instance, you can send post request to see it's not applicable:</p>
+    <form class="myForm">
+        <input type="text" name="firstName" placeholder="name">
+        <input type="text" name="lastName" placeholder="lastName">
+        <input type="submit" name="submitButton" value="Submit">
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        "use strict";
+
+
+        $('.myForm').submit(event => {
+            event.preventDefault();
+
+            let port;
+            $.get('port.txt', port => {
+                let url = `http://localhost:${port}`;
+                let myData = {
+                    first: $("input[name='firstName'").val(),
+                    last: $("input[name='lastName'").val()
+                };
+                $.post(url, myData)
+                    .done(data => {
+                        let w = window.open('about:blank', '_self');
+                        w.document.open();
+                        w.document.write(data);
+                        w.document.close();
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>
